@@ -3,7 +3,7 @@ import yfinance as yf
 import customtkinter as ctk
 import plotly.graph_objects as graph
 from datetime import datetime
-from prophet import models
+from prophet import models, Prophet
 from prophet.plot import plot_plotly, plot_components_plotly
 
 pd.options.display.float_format = '${:,.2f}'.format #global float format
@@ -49,3 +49,11 @@ model_df.rename(columns={'Date':'ds', 'Close':'y'}, inplace=True)
 #         type="date",
 #     )
 # )
+
+m = Prophet(
+    seasonality_mode="multiplicative",
+)
+m.fit(model_df)
+
+future = m.make_future_dataframe(periods = 365)
+future.tail()
