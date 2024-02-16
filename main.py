@@ -16,14 +16,15 @@ eth_df = yf.download('ETH-USD',start_date, today)
 # making data frame ready for the model
 eth_df.reset_index(inplace=True)
 model_df = eth_df[['Date', 'Open']]
+model_df.rename(columns={'Date':'ds', 'Open':'y'}, inplace=True)
 # plot the open price
 
-x = model_df["Date"]
-y = model_df['Open']
+x = model_df["ds"]
+y = model_df['y']
 
 fig = graph.Figure()
 
-fig.add_trace(graph.Scatter(x=x, y=y))
+fig.add_trace(graph.Scatter(x=x, y=y, name='Actual Open Price'))
 
 # Set title
 fig.update_layout(
@@ -61,5 +62,5 @@ forecast = m.predict(future)
 forecast[["ds", "yhat", "yhat_lower", "yhat_upper"]]
 plot_plotly(m, forecast)
 
-fig.add_trace(graph.Scatter(x=forecast["ds"], y=forecast["yhat"], name='Predicted'))
+fig.add_trace(graph.Scatter(x=forecast["ds"], y=(forecast["yhat"]+forecast['yhat_upper'])/2, name='Predicted Trend', mode='lines', line=dict(color='red', width=2)))
 fig.show()
