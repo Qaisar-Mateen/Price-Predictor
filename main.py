@@ -60,5 +60,4 @@ forecast = m.predict(future)
 forecast[["ds", "yhat", "yhat_lower", "yhat_upper"]]
 #plot_plotly(m, forecast)
 
-fig.add_trace(graph.Scatter(x=forecast["ds"], y=(forecast["yhat"]+forecast['yhat_upper'])/2, name='Predicted Trend', mode='lines', line=dict(color='red', width=8)))
-fig.show()
+fig.add_trace(graph.Scatter(x=forecast["ds"], y=(forecast["yhat"]+forecast['yhat_upper'])/2, name='Predicted Trend'))
