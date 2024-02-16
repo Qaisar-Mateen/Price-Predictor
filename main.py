@@ -20,42 +20,46 @@ model_df.rename(columns={'Date':'ds', 'Close':'y'}, inplace=True)
 
 # plot the open price
 
-# x = model_df["ds"]
-# y = model_df["y"]
+x = model_df["ds"]
+y = model_df["y"]
 
-# fig = graph.Figure()
+fig = graph.Figure()
 
-# fig.add_trace(graph.Scatter(x=x, y=y))
+fig.add_trace(graph.Scatter(x=x, y=y))
 
-# # Set title
-# fig.update_layout(
-#     title_text="Time series plot of Ethereum Open Price",
-# )
-
-# fig.update_layout(
-#     xaxis=dict(
-#         rangeselector=dict(
-#             buttons=list(
-#                 [
-#                     dict(count=1, label="1m", step="month", stepmode="backward"),
-#                     dict(count=6, label="6m", step="month", stepmode="backward"),
-#                     dict(count=1, label="YTD", step="year", stepmode="todate"),
-#                     dict(count=1, label="1y", step="year", stepmode="backward"),
-#                     dict(step="all"),
-#                 ]
-#             )
-#         ),
-#         rangeslider=dict(visible=True),
-#         type="date",
-#     )
-# )
-
-m = Prophet(
-    seasonality_mode="multiplicative",
+# Set title
+fig.update_layout(
+    title_text="Time series plot of Ethereum Open Price",
 )
-m.fit(model_df)
 
-future = m.make_future_dataframe(periods = 365)
-#future.tail()
-forecast = m.predict(future)
-forecast[['ds', 'yhat', 'yhat_lower', 'yhat_upper']].tail()
+fig.update_layout(
+    xaxis=dict(
+        rangeselector=dict(
+            buttons=list(
+                [
+                    dict(count=1, label="1m", step="month", stepmode="backward"),
+                    dict(count=6, label="6m", step="month", stepmode="backward"),
+                    dict(count=1, label="YTD", step="year", stepmode="todate"),
+                    dict(count=1, label="1y", step="year", stepmode="backward"),
+                    dict(step="all"),
+                ]
+            )
+        ),
+        rangeslider=dict(visible=True),
+        type="date",
+    )
+)
+
+#fig.show()
+
+# m = Prophet(
+#     seasonality_mode="multiplicative",
+# )
+# m.fit(model_df)
+
+# future = m.make_future_dataframe(periods = 365)
+# future.tail()
+# forecast = m.predict(future)
+# forecast[['ds', 'yhat', 'yhat_lower', 'yhat_upper']].tail()
+
+# plot_plotly(m, forecast)
