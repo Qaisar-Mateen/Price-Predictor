@@ -63,5 +63,5 @@ forecast = m.predict(future)
 forecast[["ds", "yhat", "yhat_lower", "yhat_upper"]]
 plot_plotly(m, forecast)
 
-fig.add_trace(graph.Scatter(x=forecast["ds"], y=forecast["yhat_upper"], mode='lines', name='Predicted'))
+fig.add_trace(graph.Scatter(x=forecast["ds"], y=forecast["yhat_upper"], name='Predicted'))
 fig.show()
