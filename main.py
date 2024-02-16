@@ -52,14 +52,14 @@ fig.update_layout(
 
 #fig.show()
 
-# m = Prophet(
-#     seasonality_mode="multiplicative",
-# )
-# m.fit(model_df)
+m = Prophet(
+    seasonality_mode="multiplicative",
+)
+m.fit(model_df)
 
-# future = m.make_future_dataframe(periods = 365)
-# future.tail()
-# forecast = m.predict(future)
-# forecast[['ds', 'yhat', 'yhat_lower', 'yhat_upper']].tail()
+future = m.make_future_dataframe(periods = 365)
+future.tail()
+forecast = m.predict(future)
+forecast[['ds', 'yhat', 'yhat_lower', 'yhat_upper']].tail()
 
-# plot_plotly(m, forecast)
+plot_plotly(m, forecast)
