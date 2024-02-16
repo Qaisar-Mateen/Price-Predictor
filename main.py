@@ -13,5 +13,4 @@ today = datetime.today().strftime('%Y-%m-%d')
 start_date = '2016-01-01'
 eth_df = yf.download('ETH-USD',start_date, today) 
 eth_df.tail()
-
-print(eth_df.head())
+eth_df.info()
