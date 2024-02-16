@@ -60,6 +60,8 @@ m.fit(model_df)
 future = m.make_future_dataframe(periods = 365)
 future.tail()
 forecast = m.predict(future)
-forecast[['ds', 'yhat', 'yhat_lower', 'yhat_upper']].tail()
-
+forecast[["ds", "yhat", "yhat_lower", "yhat_upper"]]
 plot_plotly(m, forecast)
+
+fig.add_trace(graph.Scatter(x=forecast["ds"], y=forecast["yhat"], mode='lines', name='Predicted'))
+fig.show()
