@@ -56,4 +56,6 @@ m = Prophet(
 m.fit(model_df)
 
 future = m.make_future_dataframe(periods = 365)
-future.tail()
+#future.tail()
+forecast = m.predict(future)
+forecast[['ds', 'yhat', 'yhat_lower', 'yhat_upper']].tail()
