@@ -12,5 +12,6 @@ pd.options.display.float_format = '${:,.2f}'.format #global float format
 today = datetime.today().strftime('%Y-%m-%d')
 start_date = '2016-01-01'
 eth_df = yf.download('ETH-USD',start_date, today) 
-eth_df.tail()
-eth_df.info()
+eth_df.reset_index(inplace=True)
+model_df = eth_df[['Date', 'Close']]
+model_df.rename(columns={'Date':'ds', 'Close':'y'}, inplace=True)
