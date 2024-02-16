@@ -49,8 +49,6 @@ fig.update_layout(
     )
 )
 
-#fig.show()
-
 m = Prophet(
     seasonality_mode="multiplicative",
 )
@@ -60,7 +58,7 @@ future = m.make_future_dataframe(periods = 365)
 future.tail()
 forecast = m.predict(future)
 forecast[["ds", "yhat", "yhat_lower", "yhat_upper"]]
-plot_plotly(m, forecast)
+#plot_plotly(m, forecast)
 
-fig.add_trace(graph.Scatter(x=forecast["ds"], y=(forecast["yhat"]+forecast['yhat_upper'])/2, name='Predicted Trend', mode='lines', line=dict(color='red', width=2)))
+fig.add_trace(graph.Scatter(x=forecast["ds"], y=(forecast["yhat"]+forecast['yhat_upper'])/2, name='Predicted Trend', mode='lines', line=dict(color='red', width=8)))
 fig.show()
