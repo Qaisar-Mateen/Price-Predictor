@@ -36,6 +36,17 @@ def BTC_data():
     model_df.rename(columns={'Date':'ds', 'Open':'y'}, inplace=True)
     return model_df['ds'], model_df['y'], model_df
 
+app = dash.Dash(__name__)
+
+app.layout = html.Div([
+    dcc.Dropdown(
+        id='dropdown',
+        options=[{'label': 'BTC', 'value': 'BTC-USD'}, {'label': 'ETH', 'value': 'ETH-USD'}],
+        value='ETH-USD'
+    ),
+    dcc.Graph(id='graph')
+])
+@app.callback(Output('graph', 'figure'), Input('dropdown', 'value'))
 def build_graph(selectedValue):
     if selectedValue == 'BTC-USD':
         x, y, model = BTC_data()
@@ -113,18 +124,6 @@ def build_graph(selectedValue):
     return fig
 
 if __name__ == "__main__":
-    app = dash.Dash(__name__)
-
-    app.layout = html.Div([
-        dcc.Dropdown(
-            id='dropdown',
-            options=[{'label': 'BTC', 'value': 'BTC-USD'}, {'label': 'ETH', 'value': 'ETH-USD'}],
-            value='ETH-USD'
-        ),
-        dcc.Graph(id='graph')
-    ])
-    app.callback(Output('graph', 'figure'), Input('dropdown', 'value'))
-
     app.run_server(debug=True)
    
 
