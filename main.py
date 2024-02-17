@@ -25,25 +25,22 @@ def Eth_data():
     model_df.rename(columns={'Date':'ds', 'Open':'y'}, inplace=True)
     return model_df['ds'], model_df['y'], model_df
 
+def BTC_data():
+    # Get the data from Yahoo Finance
+    today = datetime.today().strftime('%Y-%m-%d') 
+    btc_df = get_yfinance_data('BTC-USD', '2010-01-01', today)
 
-if __name__ == "__main__":
-    app = dash.Dash(__name__)
+    # making data frame ready for the model
+    btc_df.reset_index(inplace=True)
+    model_df = btc_df[['Date', 'Open']]
+    model_df.rename(columns={'Date':'ds', 'Open':'y'}, inplace=True)
+    return model_df['ds'], model_df['y'], model_df
 
-    app.layout = html.Div([
-        dcc.Dropdown(
-            id='dropdown',
-            options=[{'label': 'BTC', 'value': 'BTC-USD'}, {'label': 'ETH', 'value': 'ETH-USD'}],
-            value='ETH-USD'
-        ),
-        dcc.Graph(id='graph')
-    ])
-
-    app.run_server(debug=True)
-    x, y, model = Eth_data()
-
-    fig = graph.Figure()
-
-    # fig.add_trace(graph.Scatter(x=x, y=y, name='Actual Open Price'))
+def build_graph(selectedValue):
+    if selectedValue == 'BTC-USD':
+        x, y, model = BTC_data()
+    else:
+        x, y, model = Eth_data()
 
     m = Prophet(seasonality_mode="multiplicative")
     m.fit(model)
@@ -90,11 +87,12 @@ if __name__ == "__main__":
             ]
         )
     )
-
-    
-    
      # Set title
-    fig.update_layout(title_text="Time series plot of Ethereum Open Price", xaxis_title="Date", yaxis_title="Price (USD)")
+    fig.update_layout(
+        title_text="Trend Prediction of Ethereum" if selectedValue == 'ETH-USD' else "Trend Prediction of Bitcoin", 
+        xaxis_title="Date", 
+        yaxis_title="Price (USD)"
+    )
 
     fig.update_layout(
         xaxis=dict(
@@ -112,6 +110,23 @@ if __name__ == "__main__":
             type="date",
         )
     )
+    return fig
+
+if __name__ == "__main__":
+    app = dash.Dash(__name__)
+
+    app.layout = html.Div([
+        dcc.Dropdown(
+            id='dropdown',
+            options=[{'label': 'BTC', 'value': 'BTC-USD'}, {'label': 'ETH', 'value': 'ETH-USD'}],
+            value='ETH-USD'
+        ),
+        dcc.Graph(id='graph')
+    ])
+    app.callback(Output('graph', 'figure'), Input('dropdown', 'value'))
+
+    app.run_server(debug=True)
+   
 
     # # Add dropdown
     # fig.update_layout(
