@@ -1,10 +1,12 @@
 import pandas as pd
 import yfinance as yf
-import customtkinter as ctk
+import dash
+import dash_core_components as dcc
+import dash_html_components as html
 import plotly.graph_objects as graph
 from datetime import datetime
-from prophet import models, Prophet
-#from prophet.plot import plot_plotly, plot_components_plotly
+from prophet import Prophet
+from dash.dependencies import Input, Output
 
 pd.options.display.float_format = '${:,.2f}'.format #global float format
 
@@ -25,7 +27,18 @@ def Eth_data():
 
 
 if __name__ == "__main__":
-    
+    app = dash.Dash(__name__)
+
+    app.layout = html.Div([
+        dcc.Dropdown(
+            id='dropdown',
+            options=[{'label': 'BTC', 'value': 'BTC-USD'}, {'label': 'ETH', 'value': 'ETH-USD'}],
+            value='ETH-USD'
+        ),
+        dcc.Graph(id='graph')
+    ])
+
+    app.run_server(debug=True)
     x, y, model = Eth_data()
 
     fig = graph.Figure()
