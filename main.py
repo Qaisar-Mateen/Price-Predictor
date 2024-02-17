@@ -171,4 +171,4 @@ def build_graph(selectedValue):
     return fig
 
 if __name__ == "__main__":
-    app.run_server()
+    app.run_server(debug=False, port=8050)
