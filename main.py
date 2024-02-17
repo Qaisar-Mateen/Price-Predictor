@@ -31,31 +31,38 @@ if __name__ == "__main__":
 
     # fig.add_trace(graph.Scatter(x=x, y=y, name='Actual Open Price'))
 
-    m = Prophet(
-        seasonality_mode="multiplicative",
-    )
+    m = Prophet(seasonality_mode="multiplicative")
     m.fit(model)
 
     future = m.make_future_dataframe(periods = 365)
-    future.tail()
     forecast = m.predict(future)
+    today = datetime.today().strftime('%Y-%m-%d')
+
+    previous_trend = forecast[forecast['ds'] < today]
 
     fig = graph.Figure(
-        data=[graph.Scatter(x=model['ds'], y=model['y'], mode='lines', name='Actual Open Price')],
+        data=[
+            graph.Scatter(x=x, y=y, mode='lines', name='Actual Open Price'),
+            graph.Scatter(
+                x=previous_trend['ds'], 
+                y=(previous_trend['yhat']+previous_trend['yhat_upper'])/2, 
+                name='Predicted'
+            )
+        ],
         frames=[graph.Frame(
         data=[graph.Scatter(
             x=forecast['ds'].iloc[:i],
-            y=forecast['yhat'].iloc[:i],
+            y=(forecast['yhat'].iloc[:i]+forecast['yhat_upper'].iloc[:i])/2,
             mode='lines',
             name='Predicted')]
-        ) for i in range(len(forecast))],
+        ) for i in range(len(forecast[forecast['ds'] > today]), len(forecast), 30)],
         layout=graph.Layout(
             updatemenus=[
                 dict(
                     type="buttons",
                     buttons=[
                         dict(
-                            label="Play",
+                            label="Predict Trend",
                             method="animate",
                             args=[None]
                         )
@@ -70,22 +77,22 @@ if __name__ == "__main__":
      # Set title
     fig.update_layout(title_text="Time series plot of Ethereum Open Price", xaxis_title="Date", yaxis_title="Price (USD)")
 
-    # fig.update_layout(
-    #     xaxis=dict(
-    #         rangeselector=dict(
-    #         buttons=list(
-    #                 [
-    #                     dict(count=1, label="1m", step="month", stepmode="todate"),
-    #                     dict(count=6, label="6m", step="month", stepmode="todate"),
-    #                     dict(count=1, label="1y", step="year", stepmode="todate"),
-    #                     dict(step="all"),
-    #                 ]
-    #             )
-    #         ),
-    #         rangeslider=dict(visible=True),
-    #         type="date",
-    #     )
-    # )
+    fig.update_layout(
+        xaxis=dict(
+            rangeselector=dict(
+            buttons=list(
+                    [
+                        dict(count=1, label="1m", step="month", stepmode="todate"),
+                        dict(count=6, label="6m", step="month", stepmode="todate"),
+                        dict(count=1, label="1y", step="year", stepmode="todate"),
+                        dict(step="all"),
+                    ]
+                )
+            ),
+            rangeslider=dict(visible=True),
+            type="date",
+        )
+    )
 
     # # Add dropdown
     # fig.update_layout(
