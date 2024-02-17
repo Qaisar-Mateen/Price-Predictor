@@ -4,7 +4,7 @@ import customtkinter as ctk
 import plotly.graph_objects as graph
 from datetime import datetime
 from prophet import models, Prophet
-from prophet.plot import plot_plotly, plot_components_plotly
+#from prophet.plot import plot_plotly, plot_components_plotly
 
 pd.options.display.float_format = '${:,.2f}'.format #global float format
 
