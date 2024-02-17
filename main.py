@@ -25,6 +25,7 @@ def Eth_data():
 
 
 if __name__ == "__main__":
+    
     x, y, model = Eth_data()
 
     fig = graph.Figure()
@@ -39,23 +40,28 @@ if __name__ == "__main__":
     today = datetime.today().strftime('%Y-%m-%d')
 
     previous_trend = forecast[forecast['ds'] < today]
-
+    future_trend = forecast[forecast['ds'] >= today]
     fig = graph.Figure(
         data=[
-            graph.Scatter(x=x, y=y, mode='lines', name='Actual Open Price'),
+            graph.Scatter(x=[], y=[]),
+            graph.Scatter(x=x, y=y, mode='lines', name='Actual Open Price', line=dict(color='blue')),
             graph.Scatter(
                 x=previous_trend['ds'], 
                 y=(previous_trend['yhat']+previous_trend['yhat_upper'])/2, 
-                name='Predicted'
+                name='Previous Prediction',
+                line=dict(color='red')
             )
         ],
         frames=[graph.Frame(
-        data=[graph.Scatter(
-            x=forecast['ds'].iloc[:i],
-            y=(forecast['yhat'].iloc[:i]+forecast['yhat_upper'].iloc[:i])/2,
-            mode='lines',
-            name='Predicted')]
-        ) for i in range(len(forecast[forecast['ds'] > today]), len(forecast), 30)],
+            data=[graph.Scatter(
+                    x=future_trend['ds'].iloc[:i],
+                    y=(future_trend['yhat'].iloc[:i]+future_trend['yhat_upper'].iloc[:i])/2,
+                    mode='lines',
+                    name='Future Predicted Trend',
+                    line=dict(color='red')
+                )
+            ]
+        ) for i in range(0, len(future_trend), 15)],
         layout=graph.Layout(
             updatemenus=[
                 dict(
@@ -120,36 +126,6 @@ if __name__ == "__main__":
     #         ),
     #     ]
     # )
-
     
-    # fig.add_trace(
-    #     graph.Scatter(
-    #         x=forecast["ds"], y=(forecast["yhat"]+forecast['yhat_upper'])/2, 
-    #         name='Predicted Trend', visible='legendonly'
-    #     )
-    # )
-
-    
-
-
-    # fig.update_layout(
-    #     updatemenus=[
-    #         dict(
-    #             type="buttons",
-    #             direction="right",
-    #             active=0,
-    #             buttons=list([
-    #                 dict(label="Show Prediction",
-    #                     method="update",
-    #                     args=[{"visible": [True, True]}, {"title": "With Prediction"}]
-    #                 ),
-    #                 dict(label="Hide Prediction",
-    #                     method="update",
-    #                     args=[{"visible": [True, False]}, {"title": "Without Prediction"}]
-    #                 )
-    #             ]),
-    #         )
-    #     ]
-    # )
 
     fig.show()
