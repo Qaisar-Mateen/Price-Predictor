@@ -29,27 +29,7 @@ if __name__ == "__main__":
 
     fig = graph.Figure()
 
-    fig.add_trace(graph.Scatter(x=x, y=y, name='Actual Open Price'))
-
-    # Set title
-    fig.update_layout(title_text="Time series plot of Ethereum Open Price", xaxis_title="Date", yaxis_title="Price (USD)")
-
-    fig.update_layout(
-        xaxis=dict(
-            rangeselector=dict(
-            buttons=list(
-                    [
-                        dict(count=1, label="1m", step="month", stepmode="todate"),
-                        dict(count=6, label="6m", step="month", stepmode="todate"),
-                        dict(count=1, label="1y", step="year", stepmode="todate"),
-                        dict(step="all"),
-                    ]
-                )
-            ),
-            rangeslider=dict(visible=True),
-            type="date",
-        )
-    )
+    # fig.add_trace(graph.Scatter(x=x, y=y, name='Actual Open Price'))
 
     m = Prophet(
         seasonality_mode="multiplicative",
@@ -59,7 +39,110 @@ if __name__ == "__main__":
     future = m.make_future_dataframe(periods = 365)
     future.tail()
     forecast = m.predict(future)
-    forecast[["ds", "yhat", "yhat_lower", "yhat_upper"]]
-    #plot_plotly(m, forecast)
 
-    fig.add_trace(graph.Scatter(x=forecast["ds"], y=(forecast["yhat"]+forecast['yhat_upper'])/2, name='Predicted Trend'))
+    fig = graph.Figure(
+        data=[graph.Scatter(x=model['ds'], y=model['y'], mode='lines', name='Actual Open Price')],
+        frames=[graph.Frame(
+        data=[graph.Scatter(
+            x=forecast['ds'].iloc[:i],
+            y=forecast['yhat'].iloc[:i],
+            mode='lines',
+            name='Predicted')]
+        ) for i in range(len(forecast))],
+        layout=graph.Layout(
+            updatemenus=[
+                dict(
+                    type="buttons",
+                    buttons=[
+                        dict(
+                            label="Play",
+                            method="animate",
+                            args=[None]
+                        )
+                    ]
+                )
+            ]
+        )
+    )
+
+    
+    
+     # Set title
+    fig.update_layout(title_text="Time series plot of Ethereum Open Price", xaxis_title="Date", yaxis_title="Price (USD)")
+
+    # fig.update_layout(
+    #     xaxis=dict(
+    #         rangeselector=dict(
+    #         buttons=list(
+    #                 [
+    #                     dict(count=1, label="1m", step="month", stepmode="todate"),
+    #                     dict(count=6, label="6m", step="month", stepmode="todate"),
+    #                     dict(count=1, label="1y", step="year", stepmode="todate"),
+    #                     dict(step="all"),
+    #                 ]
+    #             )
+    #         ),
+    #         rangeslider=dict(visible=True),
+    #         type="date",
+    #     )
+    # )
+
+    # # Add dropdown
+    # fig.update_layout(
+    #     updatemenus=[
+    #         dict(
+    #         buttons=list([
+    #                 dict(
+    #                     args=["type", "surface"],
+    #                     label="ETH",
+    #                     method="update"
+    #                 ),
+    #                 dict(
+    #                     args=["type", "heatmap"],
+    #                     label="BTC",
+    #                     method="update"
+    #                 )
+    #             ]),
+    #             direction="down",
+    #             pad={"r": 10, "t": 10},
+    #             showactive=True,
+    #             x=1.0,
+    #             xanchor="right",
+    #             y=1.12,
+    #             yanchor="top"
+    #         ),
+    #     ]
+    # )
+
+    
+    # fig.add_trace(
+    #     graph.Scatter(
+    #         x=forecast["ds"], y=(forecast["yhat"]+forecast['yhat_upper'])/2, 
+    #         name='Predicted Trend', visible='legendonly'
+    #     )
+    # )
+
+    
+
+
+    # fig.update_layout(
+    #     updatemenus=[
+    #         dict(
+    #             type="buttons",
+    #             direction="right",
+    #             active=0,
+    #             buttons=list([
+    #                 dict(label="Show Prediction",
+    #                     method="update",
+    #                     args=[{"visible": [True, True]}, {"title": "With Prediction"}]
+    #                 ),
+    #                 dict(label="Hide Prediction",
+    #                     method="update",
+    #                     args=[{"visible": [True, False]}, {"title": "Without Prediction"}]
+    #                 )
+    #             ]),
+    #         )
+    #     ]
+    # )
+
+    fig.show()
