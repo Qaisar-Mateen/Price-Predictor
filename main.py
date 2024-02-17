@@ -168,66 +168,6 @@ def build_graph(selectedValue):
             type="date",
         )
     )
-    else:        
-    fig = graph.Figure(
-        data=[
-            graph.Scatter(x=[], y=[]),
-            graph.Scatter(x=x, y=y, mode='lines', name='Actual Open Price', line=dict(color='blue')),
-            graph.Scatter(
-                x=previous_trend['ds'], 
-                y=(previous_trend['yhat']+previous_trend['yhat_upper'])/2, 
-                name='Previous Prediction',
-                line=dict(color='red')
-            )
-        ],
-        frames=[graph.Frame(
-            data=[graph.Scatter(
-                    x=future_trend['ds'].iloc[:i],
-                    y=(future_trend['yhat'].iloc[:i]+future_trend['yhat_upper'].iloc[:i])/2,
-                    mode='lines',
-                    name='Future Predicted Trend',
-                    line=dict(color='red')
-                )
-            ]
-        ) for i in range(0, len(future_trend), 15)],
-        layout=graph.Layout(
-            updatemenus=[
-                dict(
-                    type="buttons",
-                    buttons=[
-                        dict(
-                            label="Predict Trend",
-                            method="animate",
-                            args=[None, {"frame": {"duration": 500, "redraw": True}, "fromcurrent": True}]
-                        )
-                    ]
-                )
-            ]
-        )
-    )
-     # Set title
-    fig.update_layout(
-        title_text="Trend Prediction of Ethereum" if selectedValue == 'ETH-USD' else "Trend Prediction of Bitcoin", 
-        xaxis_title="Date", 
-        yaxis_title="Price (USD)"
-    )
-
-    fig.update_layout(
-        xaxis=dict(
-            rangeselector=dict(
-            buttons=list(
-                    [
-                        dict(count=1, label="1m", step="month", stepmode="todate"),
-                        dict(count=6, label="6m", step="month", stepmode="todate"),
-                        dict(count=1, label="1y", step="year", stepmode="todate"),
-                        dict(step="all"),
-                    ]
-                )
-            ),
-            rangeslider=dict(visible=True),
-            type="date",
-        )
-    )
     return fig
 
 if __name__ == "__main__":
