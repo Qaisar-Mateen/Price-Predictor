@@ -1,11 +1,10 @@
 import pandas as pd
 import yfinance as yf
 import dash
-import dash_core_components as dcc
-import dash_html_components as html
 import plotly.graph_objects as graph
 from datetime import datetime
 from prophet import Prophet
+from dash import dcc, html
 from dash.dependencies import Input, Output
 
 pd.options.display.float_format = '${:,.2f}'.format #global float format
@@ -125,34 +124,3 @@ def build_graph(selectedValue):
 
 if __name__ == "__main__":
     app.run_server(debug=True)
-   
-
-    # # Add dropdown
-    # fig.update_layout(
-    #     updatemenus=[
-    #         dict(
-    #         buttons=list([
-    #                 dict(
-    #                     args=["type", "surface"],
-    #                     label="ETH",
-    #                     method="update"
-    #                 ),
-    #                 dict(
-    #                     args=["type", "heatmap"],
-    #                     label="BTC",
-    #                     method="update"
-    #                 )
-    #             ]),
-    #             direction="down",
-    #             pad={"r": 10, "t": 10},
-    #             showactive=True,
-    #             x=1.0,
-    #             xanchor="right",
-    #             y=1.12,
-    #             yanchor="top"
-    #         ),
-    #     ]
-    # )
-    
-
-    fig.show()
