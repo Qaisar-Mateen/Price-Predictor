@@ -1,7 +1,7 @@
 # Price Predictor
 
 A Crypto Currency price predictor using time series model
-only support for Bitcoin and Ethereum
+only support for Bitcoin and Ethereum. The model use for the prediction is a Time Series Model
 do note that the prediction may not 100% reflect the real price
 
 # Features
