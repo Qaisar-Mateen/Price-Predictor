@@ -26,9 +26,10 @@ Run the main Python script:
 ```
 python main.py
 ```
+On running the main script you will be directed to a dash web application, as you can also see in the gif below.
+
+![Price Predictor GIF](price predictor demo.gif)
+
 
 # Contributing
 Contributions are welcome! If you find any issues or have suggestions for improvements, please open an issue or create a pull request.
-
-# License
-This project is licensed under the MIT License - see the LICENSE file for details.
