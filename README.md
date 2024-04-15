@@ -28,8 +28,7 @@ python main.py
 ```
 On running the main script you will be directed to a dash web application, as you can also see in the gif below.
 
-![Price Predictor GIF](price predictor demo.gif)
-
+![price predictor demo.gif](https://github.com/Qaisar-Mateen/Price-Predictor/blob/d755f70bdf517a4dfee0fc78e8ee3039775eabbc/price%20predictor%20demo.gif)
 
 # Contributing
 Contributions are welcome! If you find any issues or have suggestions for improvements, please open an issue or create a pull request.
