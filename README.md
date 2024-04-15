@@ -1,12 +1,9 @@
-# Price-Predictor
-A Crypto Currency price predictor using time series model
-only support for Bitcoin and Ethereum
-do note that the prediction may not 100% reflect the real price
-
-
 # **Price Predictor**
 
 This repository contains Python code for predicting the future price trends of Ethereum and Bitcoin using interactive plots with animations.
+A Crypto Currency price predictor using time series model
+only support for Bitcoin and Ethereum
+do note that the prediction may not 100% reflect the real price
 
 Features
 Predicts future price trends of Ethereum and Bitcoin.
